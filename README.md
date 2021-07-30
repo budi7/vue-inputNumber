@@ -27,7 +27,7 @@ download/clone and place it to your components directory
     v-model : 2 way binding to your model variable (Number)
     min-value : minimum value (Number)
     max-value : maximum value (Number)
-    class : styling class you want to add to the component" (String)
+    input-class : styling class you want to add to the component" (String)
     disabled: set disabled state of component (Boolean)
   
   
