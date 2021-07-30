@@ -3,7 +3,7 @@
     :disabled="disabled"
     autocomplete="off"
     type="text"
-    class="form-control"
+    :class="`form-control ${inputClass}`"
     :value="input"
     @keypress="validate($event)"
     @input="updateValue($event.target.value)"
@@ -29,6 +29,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    inputClass: {
+      type: String,
+      default: null
     }
   },
   computed: {
