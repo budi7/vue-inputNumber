@@ -7,7 +7,8 @@
     :value="input"
     @keypress="validate($event)"
     @input="updateValue($event.target.value)"
-    @focus="$emit('focus')"
+    @focus="handleFocus(true, $event.target.value)"
+    @blur="handleFocus(false, $event.target.value)"
   >
 </template>
 
@@ -32,7 +33,12 @@ export default {
     },
     inputClass: {
       type: String,
-      default: null
+      default: ''
+    }
+  },
+  data () {
+    return {
+      isFocus: false
     }
   },
   computed: {
@@ -66,15 +72,17 @@ export default {
       if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
         evt.preventDefault()
       } else {
-        if (parseInt(this.minValue) >= 0) {
+        if (this.minValue && (parseInt(this.minValue) >= 0)) {
           if (parseInt(this.value) <= this.minValue) {
             evt.preventDefault()
+            this.input = this.minValue
           }
         }
 
-        if (parseInt(this.maxValue) >= 0) {
+        if (this.maxValue && (parseInt(this.maxValue) >= 0)) {
           if (parseInt(this.value) >= this.maxValue) {
             evt.preventDefault()
+            this.input = this.maxValue
           }
         }
 
@@ -83,7 +91,16 @@ export default {
     },
     updateValue (val) {
       const res = val.split('.').join('')
-      this.$emit('input', parseInt(res))
+      this.$emit('input', res ? parseInt(res) : null)
+    },
+    handleFocus (state, val) {
+      if (state) {
+        this.$emit('focus')
+      } else {
+        this.$emit('blur')
+        const res = val.split('.').join('')
+        this.$emit('change', res ? parseInt(res) : null)
+      }
     }
   }
 }
