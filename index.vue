@@ -47,7 +47,7 @@ export default {
         return val
       },
       get () {
-        if (!this.value) {
+        if (typeof this.value !== 'number') {
           return null
         }
 
@@ -63,7 +63,7 @@ export default {
     }
   },
   mounted () {
-    this.input = this.value ? this.value : null
+    this.input = this.value || parseInt(this.value) === 0 ? this.value : null
   },
   methods: {
     validate (evt) {
@@ -91,7 +91,7 @@ export default {
     },
     updateValue (val) {
       const res = val.split('.').join('')
-      this.$emit('input', res ? parseInt(res) : null)
+      this.$emit('input', res || parseInt(res) === 0 ? parseInt(res) : null)
     },
     handleFocus (state, val) {
       if (state) {
@@ -99,7 +99,7 @@ export default {
       } else {
         this.$emit('blur')
         const res = val.split('.').join('')
-        this.$emit('change', res ? parseInt(res) : null)
+        this.$emit('change', res || parseInt(res) === 0 ? parseInt(res) : null)
       }
     }
   }
