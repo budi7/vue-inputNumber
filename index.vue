@@ -62,10 +62,19 @@ export default {
       }
     }
   },
+  watch: {
+    value (dt) {
+      // console.log('triggered', dt)
+      this.setInput()
+    }
+  },
   mounted () {
-    this.input = this.value || parseInt(this.value) === 0 ? this.value : null
+    this.setInput()
   },
   methods: {
+    setInput () {
+      this.input = this.value || parseInt(this.value) === 0 ? this.value : null
+    },
     validate (evt) {
       evt = (evt) || window.event
       const charCode = (evt.which) ? evt.which : evt.keyCode
@@ -92,6 +101,7 @@ export default {
     updateValue (val) {
       const res = val.split('.').join('')
       this.$emit('input', res || parseInt(res) === 0 ? parseInt(res) : null)
+      this.setInput()
     },
     handleFocus (state, val) {
       if (state) {
